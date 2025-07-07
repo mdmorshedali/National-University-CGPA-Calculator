@@ -1,0 +1,230 @@
+<!-- This system developed by Md Morshed Ali -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>NU Letter Grade Calculator</title>
+   <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/128/4436/4436481.png">
+
+  <style>
+  /* This system developed by Md Morshed Ali */
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(120deg, #e0f7fa, #ffffff);
+      padding: 20px;
+      max-width: 900px;
+      margin: auto;
+      color: #333;
+    }
+	/* This system developed by Md Morshed Ali */
+
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+      margin-top: 20px;
+    }
+
+    .header img {
+      width: 115px;
+      height: 130px;
+      
+      /* This system developed by Md Morshed Ali */
+    }
+
+    h1 {
+      text-align: center;
+      color: #00695c;
+      margin-bottom: 30px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    
+	/* This system developed by Md Morshed Ali */
+    
+    table, th, td {
+      border: 1px solid #ddd;
+    }
+
+    th {
+      background-color: #0097a7;
+      color: white;
+      padding: 12px;
+    }
+
+    td {
+      padding: 10px;
+      text-align: center;
+    }
+
+    select {
+      padding: 6px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      width: 80px;
+      font-weight: bold;
+    }
+    
+    /* This system developed by Md Morshed Ali */
+    
+
+    button {
+      margin-top: 20px;
+      background-color: #00796b;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: 0.3s;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+	/* This system developed by Md Morshed Ali */
+    
+    button:hover {
+      background-color: #004d40;
+    }
+
+    h3#averageGPA {
+      text-align: center;
+      margin-top: 30px;
+      font-size: 20px;
+      color: #004d40;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 40px;
+      font-size: 16px;
+      color: #777;
+    }
+
+    .footer a {
+      color: #00796b;
+      text-decoration: none;
+      font-weight: bold;
+      text-decoration-line: underline;
+      font-size: 18px;
+    }
+    
+    /* This system developed by Md Morshed Ali */
+
+    @media (max-width: 600px) {
+      select {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+		<!-- This system developed by Md Morshed Ali -->
+
+  <div class="header">
+    <img src="https://vectorseek.com/wp-content/uploads/2023/08/National-University-of-Bangladesh-Logo-Vector.svg-.png" alt="NU Logo">
+  </div>
+
+  <h1>National University Grade Calculator</h1>
+
+  <form id="gradeForm">
+    <table>
+      <thead>
+        <tr>
+          <th>Subject</th>
+          <th>Letter Grade</th>
+          <th>Grade Point</th>
+        </tr>
+      </thead>
+      <tbody id="subjectTable"></tbody>
+    </table>
+    <button type="button" onclick="calculateGPA()">Calculate GPA</button>
+  </form>
+  
+		<!-- This system developed by Md Morshed Ali -->
+
+  <h3 id="averageGPA"></h3>
+
+  <div class="footer">
+    This system developed by 
+    <a href="https://github.com/mdmorshedali" target="_blank">Morshed</a>
+  </div>
+
+  <script>
+    const subjectCount = 10;
+    const table = document.getElementById("subjectTable");
+
+    const gradeMap = {
+      "A+": 4.00,
+      "A": 3.75,
+      "A-": 3.50,
+      "B+": 3.25,
+      "B": 3.00,
+      "B-": 2.75,
+      "C+": 2.50,
+      "C": 2.25,
+      "D": 2.00,
+     
+    };
+
+		/* This system developed by Md Morshed Ali */
+
+    const gradeOptions = Object.keys(gradeMap).map(grade =>
+      `<option value="${grade}">${grade}</option>`
+    ).join('');
+
+    for (let i = 1; i <= subjectCount; i++) {
+      const row = `
+        <tr>
+          <td>Subject ${i}</td>
+          <td>
+            <select name="letter">
+              <option value="">Select</option>
+              ${gradeOptions}
+            </select>
+          </td>
+          <td class="gradePoint"></td>
+        </tr>
+      `;
+      table.insertAdjacentHTML('beforeend', row);
+    }
+    
+    /* This system developed by Md Morshed Ali */
+
+    function calculateGPA() {
+      const rows = document.querySelectorAll("#subjectTable tr");
+      let totalGP = 0;
+      let validSubjects = 0;
+
+      rows.forEach(row => {
+        const select = row.querySelector("select[name='letter']");
+        const gradePointCell = row.querySelector(".gradePoint");
+
+        const letter = select.value;
+        if (gradeMap.hasOwnProperty(letter)) {
+          const gp = gradeMap[letter];
+          gradePointCell.textContent = gp.toFixed(2);
+          totalGP += gp;
+          validSubjects++;
+        } else {
+          gradePointCell.textContent = "Invalid";
+        }
+      });
+      
+      /* This system developed by Md Morshed Ali */
+
+      const avgGPA = validSubjects ? (totalGP / validSubjects).toFixed(2) : "N/A";
+      document.getElementById("averageGPA").textContent = `Average GPA: ${avgGPA}`;
+    }
+  </script>
+
+</body>
+</html>
